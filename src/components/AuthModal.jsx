@@ -32,12 +32,14 @@ export default function AuthModal({ isOpen, onClose }) {
         }
     }, [isOpen]);
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5000' : '');
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoading(true);
         setErrorMsg('');
         try {
-            const res = await fetch('http://localhost:5000/api/auth/login', {
+            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: formData.email, password: formData.password })
@@ -58,7 +60,7 @@ export default function AuthModal({ isOpen, onClose }) {
         setLoading(true);
         setErrorMsg('');
         try {
-            const res = await fetch('http://localhost:5000/api/auth/register', {
+            const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

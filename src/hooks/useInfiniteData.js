@@ -39,8 +39,9 @@ export function useInfiniteData(endpoint) {
                 executeFetch(fetchPromise);
             });
         } else {
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5000' : '');
             // standard fallback for things that only exist in local DB (movies)
-            fetchPromise = fetch(`http://localhost:5000/api/${endpoint}?page=${page}&limit=10`)
+            fetchPromise = fetch(`${API_BASE_URL}/api/${endpoint}?page=${page}&limit=10`)
                 .then(res => {
                     if (!res.ok) throw new Error('Network response was not ok');
                     return res.json();

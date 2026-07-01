@@ -28,7 +28,8 @@ export const fetchMarvelCharacters = async (limit = 20, offset = 0) => {
         console.warn('marvelService fetchMarvelCharacters failed, using fallback database:', error.message);
         // Fallback to local API (MongoDB) or static fallback JSON
         try {
-            const fallbackRes = await fetch(`http://localhost:5000/api/characters?page=${Math.floor(offset / limit) + 1}&limit=${limit}`);
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5000' : '');
+            const fallbackRes = await fetch(`${API_BASE_URL}/api/characters?page=${Math.floor(offset / limit) + 1}&limit=${limit}`);
             if (fallbackRes.ok) {
                 const md = await fallbackRes.json();
                 return md.data.map(m => ({ ...m, id: m._id }));
@@ -53,7 +54,8 @@ export const fetchMarvelComics = async (limit = 20, offset = 0) => {
     } catch (error) {
         console.warn('marvelService fetchMarvelComics failed, using fallback database:', error.message);
         try {
-            const fallbackRes = await fetch(`http://localhost:5000/api/comics?page=${Math.floor(offset / limit) + 1}&limit=${limit}`);
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? 'http://localhost:5000' : '');
+            const fallbackRes = await fetch(`${API_BASE_URL}/api/comics?page=${Math.floor(offset / limit) + 1}&limit=${limit}`);
             if (fallbackRes.ok) {
                 const md = await fallbackRes.json();
                 return md.data.map(m => ({ ...m, id: m._id }));
